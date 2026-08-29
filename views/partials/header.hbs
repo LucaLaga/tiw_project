@@ -1,0 +1,44 @@
+<header class="site-header">
+  <a class="brand" href="/">Libreria Digitale</a>
+  
+  <nav class="site-nav">
+    <!-- Explore Dropdown -->
+    <div class="dropdown">
+      <button type="button" class="dropdown-btn">Esplora &#9662;</button>
+      <div class="dropdown-content">
+        <a href="/catalog">Catalogo</a>
+        <a href="/authors">Autori</a>
+        <a href="/genres">Generi</a> <!-- Added Genre Link -->
+      </div>
+    </div>
+
+    <!-- User Authentication & Controls -->
+    {{#if currentUser}}
+      
+      {{#if (eq currentUser.role "organizer")}}
+        <!-- Organizer Dropdown -->
+        <div class="dropdown">
+          <button type="button" class="dropdown-btn">Prestiti &#9662;</button>
+          <div class="dropdown-content">
+            <a href="/my/loans">I miei prestiti</a>
+            <a href="/organizer/loans">Tutti i prestiti</a>
+          </div>
+        </div>
+      {{else}}
+        <!-- Standard User Link -->
+        <a href="/my/loans">I miei prestiti</a>
+      {{/if}}
+
+      <span class="user-pill">Ciao, {{currentUser.name}}</span>
+      
+      <form method="post" action="/logout" class="inline-form" style="margin-left: 0.5rem;">
+        <button type="submit" class="link-button">Esci</button>
+      </form>
+      
+    {{else}}
+      <!-- Unauthenticated Links -->
+      <a href="/login">Accedi</a>
+      <a href="/register">Registrati</a>
+    {{/if}}
+  </nav>
+</header>
