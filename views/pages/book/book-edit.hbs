@@ -1,63 +1,59 @@
-<div class="actions" style="margin-bottom: 1.5rem;">
+<div class="actions">
   <a href="/books/{{book.id}}" class="button-link">&larr; Torna ai Dettagli del Libro</a>
 </div>
 
-<article class="form-card" style="max-width: 600px; margin: 0 auto;">
-  <h1 style="margin-top: 0; margin-bottom: 1.5rem; color: var(--color-accent);">Modifica Libro</h1>
+<article class="form-card">
+  <h1 class="mt-0 mb-1-5 no-border">Modifica Libro</h1>
 
   <form method="POST" action="/books/{{book.id}}/edit">
     
-    <div style="margin-bottom: 1rem;">
-      <label for="title" style="display: block; font-weight: bold; margin-bottom: 0.25rem;">Titolo</label>
+    <div class="form-group">
+      <label for="title">Titolo</label>
       <input 
         type="text" 
         id="title" 
         name="title" 
         value="{{book.title}}" 
         required
-        style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;"
       >
     </div>
 
-    <div style="margin-bottom: 1rem;">
-      <label for="isbn" style="display: block; font-weight: bold; margin-bottom: 0.25rem;">ISBN</label>
+    <div class="form-group">
+      <label for="isbn">ISBN</label>
       <input 
         type="text" 
         id="isbn" 
         name="isbn" 
         value="{{book.isbn}}" 
         required
-        style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;"
       >
     </div>
 
-    <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
-      <div style="flex: 1;">
-        <label for="publication_year" style="display: block; font-weight: bold; margin-bottom: 0.25rem;">Anno di Pubblicazione</label>
+    <div class="form-row">
+      <div>
+        <label for="publication_year">Anno di Pubblicazione</label>
         <input 
           type="number" 
           id="publication_year" 
           name="publication_year" 
           value="{{book.publication_year}}" 
           required
-          style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;"
         >
       </div>
       
-      <div style="flex: 1;">
-        <label for="pages" style="display: block; font-weight: bold; margin-bottom: 0.25rem;">Pagine</label>
+      <div>
+        <label for="pages">Pagine</label>
         <input 
           type="number" 
           id="pages" 
           name="pages" 
           value="{{book.pages}}" 
           required
-          style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;"
         >
       </div>
       
-      <div style="flex: 1;">
-        <label for="quantity" style="display: block; font-weight: bold; margin-bottom: 0.25rem;">Quantità Dispo.</label>
+      <div>
+        <label for="quantity">Quantità Dispo.</label>
         <input 
           type="number" 
           id="quantity" 
@@ -65,25 +61,23 @@
           value="{{book.quantity}}" 
           min="0"
           required
-          style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;"
         >
       </div>
     </div>
 
-    <div style="margin-bottom: 1.5rem;">
-      <label for="description" style="display: block; font-weight: bold; margin-bottom: 0.25rem;">Descrizione</label>
+    <div class="form-group mb-1-5">
+      <label for="description">Descrizione</label>
       <textarea 
         id="description" 
         name="description" 
         rows="5" 
         required
-        style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px; resize: vertical;"
       >{{book.description}}</textarea>
     </div>
 
-    <div class="actions" style="margin-top: 2rem; justify-content: flex-start; gap: 1rem;">
+    <div class="actions mt-1-5 justify-start">
       <button type="submit" class="btn btn-primary">Salva Modifiche</button>
-      <a href="/books/{{book.id}}" class="btn btn-secondary" style="text-decoration: none;">Annulla</a>
+      <a href="/books/{{book.id}}" class="btn btn-secondary">Annulla</a>
     </div>
 
   </form>

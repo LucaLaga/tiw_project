@@ -1,39 +1,39 @@
-<h1 style="margin-bottom: 1.5rem;">{{title}}</h1>
+<h1>{{title}}</h1>
 
 {{#if loans.length}}
   <ul class="item-list">
     {{#each loans}}
-      <li class="item-card" style="display: flex; align-items: center; justify-content: space-between;">
+      <li class="item-card row">
         <div>
-          <h2 style="margin: 0 0 0.25rem 0; font-size: 1.25rem;">
+          <h2 class="mt-0 mb-0-25">
             <!-- Assuming a route for loan details exists -->
             <a href="/loans/{{this.id}}">{{this.book.title}}</a>
           </h2>
           
           {{#if (eq ../currentUser.role "organizer")}}
-            <p class="meta" style="margin: 0 0 0.25rem 0;">
+            <p class="meta mt-0 mb-0-25">
               <strong>Utente:</strong> {{this.user.name}} ({{this.user.email}})
             </p>
           {{/if}}
 
-          <p class="meta" style="margin: 0;">
+          <p class="meta m-0">
             <strong>Data prestito:</strong> {{this.borrowed_at}} <br>
             <strong>Stato:</strong> 
             {{#if this.returned_at}}
               Restituito il {{this.returned_at}}
             {{else}}
-              <span class="out-of-stock" style="color: #d97706;">In prestito</span>
+              <span class="out-of-stock status-warning">In prestito</span>
             {{/if}}
           </p>
         </div>
         
         <div class="actions">
-          <a href="/loans/{{this.id}}" class="button-link" style="padding: 0.4rem 0.8rem; font-size: 0.9rem;">Dettagli</a>
+          <a href="/loans/{{this.id}}" class="btn btn-primary btn-sm">Dettagli</a>
           
           {{#unless this.returned_at}}
             {{#if (eq ../currentUser.role "organizer")}}
-              <form method="POST" action="/loans/{{this.id}}/return" style="display: inline-block; margin-left: 0.5rem;" class="inline-form">
-                <button type="submit" class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.9rem;">Restituisci</button>
+              <form method="POST" action="/loans/{{this.id}}/return" class="inline-form ml-0-5">
+                <button type="submit" class="btn btn-secondary btn-sm">Restituisci</button>
               </form>
             {{/if}}
           {{/unless}}

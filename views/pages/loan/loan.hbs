@@ -1,17 +1,17 @@
-<div class="actions" style="margin-bottom: 1.5rem;">
+<div class="actions">
   <a href="javascript:history.back()" class="button-link">&larr; Torna ai Prestiti</a>
 </div>
 
 {{#if loan}}
-  <article class="form-card" style="max-width: 100%;">
-    <h1 style="margin-top: 0; margin-bottom: 1.5rem; color: var(--primary);">
+  <article class="form-card max-w-100">
+    <h1 class="mt-0 text-primary">
       Dettaglio Prestito #{{loan.id}}
     </h1>
 
     <table class="reg-table">
       <tbody>
         <tr>
-          <th style="width: 150px;">Libro</th>
+          <th>Libro</th>
           <td>
             <a href="/books/{{loan.book.id}}"><strong>{{loan.book.title}}</strong></a> 
             <br><span class="meta">ISBN: {{loan.book.isbn}}</span>
@@ -34,7 +34,7 @@
             {{#if loan.returned_at}}
               {{loan.returned_at}}
             {{else}}
-              <span class="out-of-stock" style="color: #d97706;">Attualmente in corso</span>
+              <span class="out-of-stock status-warning">Attualmente in corso</span>
             {{/if}}
           </td>
         </tr>
@@ -43,8 +43,8 @@
 
     {{#unless loan.returned_at}}
       {{#if (eq currentUser.role "organizer")}}
-        <div class="actions" style="margin-top: 1.5rem; justify-content: flex-start;">
-          <form method="POST" action="/loans/{{loan.id}}/return" class="inline-form" style="margin-left: 0;">
+        <div class="actions mt-1-5 justify-start">
+          <form method="POST" action="/loans/{{loan.id}}/return" class="inline-form">
             <button type="submit" class="btn btn-secondary">Registra Restituzione</button>
           </form>
         </div>

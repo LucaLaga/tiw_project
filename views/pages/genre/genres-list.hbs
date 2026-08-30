@@ -1,4 +1,4 @@
-<h1 style="margin-bottom: 1.5rem;">Tutti i Generi</h1>
+<h1>{{ title }}</h1>
 
 <!-- Optional Search Form for Genres -->
 <form class="search-form" method="GET" action="/genres">
@@ -9,26 +9,25 @@
     placeholder="Cerca genere per nome..." 
     value="{{query}}"
   >
-  <button type="submit" class="btn"l>Cerca</button>
+  <button type="submit" class="btn btn-primary">Cerca</button>
 </form>
 
 {{#if genres.length}}
-  <ul class="book-list">
+  <ul class="item-list">
     {{#each genres}}
-      <li class="book-card" style="display: flex; align-items: center; justify-content: space-between;">
+      <li class="item-card row">
         <div>
-          <h2 style="margin: 0 0 0.25rem 0; font-size: 1.25rem;">
+          <h2 class="mt-0 mb-0-25">
             <a href="/genres/{{this.id}}">{{this.name}}</a>
           </h2>
-          <p class="meta" style="margin: 0;">
+          <p class="meta m-0">
             Libri nel genere: {{this.books.length}}
           </p>
         </div>
-        <a href="/genres/{{this.id}}" class="button-link" style="padding: 0.4rem 0.8rem; font-size: 0.9rem;">Esplora</a>
+        <a href="/genres/{{this.id}}" class="btn btn-primary btn-sm">Esplora</a>
       </li>
     {{/each}}
   </ul>
 {{else}}
   <p class="meta">Nessun genere trovato.</p>
 {{/if}}
-

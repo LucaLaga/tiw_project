@@ -8,17 +8,17 @@
     value="{{searchQuery}}"
     class="search-input"
   >
-  <button type="submit" class="btn-primary">Search</button>
+  <button type="submit" class="btn btn-primary">Search</button>
 
   {{#if searchQuery}}
-    <a href="?" class="btn-secondary">Clear</a>
+    <a href="?" class="btn btn-secondary">Clear</a>
   {{/if}}
 </form>
 
 {{#if books.length}}
-  <div class="book-list">
+  <ul class="item-list">
     {{#each books}}
-      <article class="book-item">
+      <li class="item-card">
         <h2><a href="/books/{{this.id}}">{{this.title}} ({{this.publication_year}})</a></h2>
         <p>
           <strong>Author(s):</strong>
@@ -34,9 +34,9 @@
             <span class="badge">{{this.name}}</span>
           {{/each}}
         </div>
-      </article>
+      </li>
     {{/each}}
-  </div>
+  </ul>
 {{else}}
-  <p>Nessun libro trovato.</p>
+  <p class="meta">Nessun libro trovato.</p>
 {{/if}}
