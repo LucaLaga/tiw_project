@@ -24,7 +24,7 @@ router.post('/register', async (req, res) => {
   if (name.length < 2) errors.push('Il nome deve avere almeno 2 caratteri.');
   if (password.length < 8) errors.push('La password deve avere almeno 8 caratteri.');
 
-  if (errors.length === 0 && usersRepo.findByEmail(email)) {
+  if (errors.length === 0 && userRepo.findByEmail(email)) {
     errors.push('Esiste già un account con questa email.');
   }
 
@@ -38,10 +38,10 @@ router.post('/register', async (req, res) => {
 
   const password_hash = await bcrypt.hash(password, BCRYPT_ROUNDS);
 
-  const userId = usersRepo.create({ email, password_hash, name });
+  const userId = userRepo.create({ email, password_hash, name });
 
   req.session.userId = userId;
-  req.redirect(303, '/catalog');
+  req.redirect(303, '/books');
 });
 
 router.get('/login', (req, res) => {
@@ -68,7 +68,7 @@ router.post('/login', async (req, res) => {
   }
 
   req.session.userId = user.id;
-  res.redirect(303, '/catalog');
+  res.redirect(303, '/books');
 });
 
 router.post('/logout', (req, res) => {
