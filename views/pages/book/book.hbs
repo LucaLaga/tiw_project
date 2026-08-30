@@ -1,0 +1,83 @@
+<div class="actions" style="margin-bottom: 1.5rem;">
+  <a href="/books" class="button-link">&larr; Torna al Catalogo</a>
+</div>
+
+{{#if book}}
+  <article class="form-card" style="max-width: 100%;">
+    <h1 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--color-accent);">
+      {{book.title}} ({{book.publication_year}})
+    </h1>
+    
+    <div class="meta">
+      <strong>Autore/i:</strong> 
+      {{#each book.authors}}
+        {{this.name}}{{#unless @last}}, {{/unless}}
+      {{else}}
+        <em>Sconosciuto</em>
+      {{/each}}
+    </div>
+
+    <div style="margin-bottom: 1.5rem;">
+      {{#each book.genres}}
+        <span class="badge">{{this.name}}</span>
+      {{/each}}
+    </div>
+
+    <p style="font-size: 1.05rem; margin-bottom: 2rem;">
+      {{book.description}}
+    </p>
+
+  <h3>Dettagli del Libro</h3>
+    <table class="reg-table">
+      <tbody>
+        <tr>
+          <th style="width: 150px;">ISBN</th>
+          <td>{{book.isbn}}</td>
+        </tr>
+        <tr>
+          <th>Pagine</th>
+          <td>{{book.pages}}</td>
+        </tr>
+        <tr>
+          <th>Disponibilità</th>
+          <td>
+            {{#if book.quantity}}
+              <span class="stock">{{book.quantity}} copie disponibili</span>
+            {{else}}
+              <span class="out-of-stock">Esaurito</span>
+            {{/if}}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- New Action Buttons -->
+    <div class="actions" style="margin-top: 1.5rem; justify-content: flex-start;">
+      {{#if book.quantity}}
+        <form method="POST" action="/catalog/{{book.id}}/borrow" class="inline-form" style="margin-left: 0;">
+          <button type="submit" class="btn btn-primary">Prendi in prestito</button>
+        </form>
+      {{/if}}
+
+      <form method="POST" action="/catalog/{{book.id}}/return" class="inline-form" style="margin-left: 0;">
+        <button type="submit" class="btn btn-secondary">Restituisci</button>
+      </form>
+    </div>
+    {{#if (eq currentUser.role "organizer")}}
+  <div class="actions" style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--color-border); justify-content: flex-start;">
+    <a href="/catalog/{{book.id}}/edit" class="btn btn-secondary">Modifica</a>
+
+    <form method="POST" action="/catalog/{{book.id}}/delete" class="inline-form" style="margin-left: 0;" onsubmit="return confirm('Sei sicuro di voler eliminare questo libro?');">
+      <button type="submit" class="btn btn-danger" style="background: #fca5a5; color: #991b1b;">Elimina</button>
+    </form>
+  </div>
+{{/if}}
+  </article>
+{{else}}
+  <div class="error-page">
+    <h1>Libro non trovato</h1>
+    <p>Il libro che stai cercando non esiste o è stato rimosso.</p>
+    <a href="/catalog" class="button-link">Torna al Catalogo</a>
+  </div>
+{{/if}}
+

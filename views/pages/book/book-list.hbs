@@ -1,0 +1,42 @@
+<h1>{{ title }}</h1>
+
+<form method="GET" action="" class="search-form">
+  <input
+    type="text"
+    name="q"
+    placeholder="Search by Title or ISBN..."
+    value="{{searchQuery}}"
+    class="search-input"
+  >
+  <button type="submit" class="btn-primary">Search</button>
+
+  {{#if searchQuery}}
+    <a href="?" class="btn-secondary">Clear</a>
+  {{/if}}
+</form>
+
+{{#if books.length}}
+  <div class="book-list">
+    {{#each books}}
+      <article class="book-item">
+        <h2><a href="/books/{{this.id}}">{{this.title}} ({{this.publication_year}})</a></h2>
+        <p>
+          <strong>Author(s):</strong>
+          {{#each this.authors}}
+            {{this.name}}{{#unless @last}}. {{/unless}}
+          {{else}}
+            <em>Unknown</em>
+          {{/each}}
+        </p>
+
+        <div>
+          {{#each this.genres}}
+            <span class="badge">{{this.name}}</span>
+          {{/each}}
+        </div>
+      </article>
+    {{/each}}
+  </div>
+{{else}}
+  <p>Nessun libro trovato.</p>
+{{/if}}
