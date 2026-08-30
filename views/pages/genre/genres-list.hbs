@@ -1,0 +1,34 @@
+<h1 style="margin-bottom: 1.5rem;">Tutti i Generi</h1>
+
+<!-- Optional Search Form for Genres -->
+<form class="search-form" method="GET" action="/genres">
+  <input 
+    type="text" 
+    name="query" 
+    class="search-input" 
+    placeholder="Cerca genere per nome..." 
+    value="{{query}}"
+  >
+  <button type="submit" class="btn"l>Cerca</button>
+</form>
+
+{{#if genres.length}}
+  <ul class="book-list">
+    {{#each genres}}
+      <li class="book-card" style="display: flex; align-items: center; justify-content: space-between;">
+        <div>
+          <h2 style="margin: 0 0 0.25rem 0; font-size: 1.25rem;">
+            <a href="/genres/{{this.id}}">{{this.name}}</a>
+          </h2>
+          <p class="meta" style="margin: 0;">
+            Libri nel genere: {{this.books.length}}
+          </p>
+        </div>
+        <a href="/genres/{{this.id}}" class="button-link" style="padding: 0.4rem 0.8rem; font-size: 0.9rem;">Esplora</a>
+      </li>
+    {{/each}}
+  </ul>
+{{else}}
+  <p class="meta">Nessun genere trovato.</p>
+{{/if}}
+
