@@ -25,7 +25,7 @@ function requireOrganizer(req, res, next) {
       type: 'error',
       message: 'Sezione riservata agli organizzatori.',
     };
-    return res.redirect(303, '/events');
+    return res.redirect(303, '/books');
   }
   return next();
 }
