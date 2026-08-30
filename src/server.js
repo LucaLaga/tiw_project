@@ -9,6 +9,7 @@ import authRoutes from './routes/auth.routes.js';
 import bookRoutes from './routes/book.routes.js';
 import authorRoutes from './routes/author.routes.js';
 import genreRoutes from './routes/genre.routes.js';
+import loanRoutes from './routes/loan.routes.js';
 
 import userRepo from './repos/user.repo.js';
 
@@ -63,6 +64,7 @@ app.use(authRoutes);
 app.use(bookRoutes);
 app.use(authorRoutes);
 app.use(genreRoutes);
+app.use(loanRoutes);
 
 app.use('/', (req, res) => {
   res.render('home', { title: 'Home' });
