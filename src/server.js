@@ -4,7 +4,9 @@ import path from 'path';
 import session from 'express-session';
 
 import flashMiddleware from './middleware/flash.js';
+
 import authRoutes from './routes/auth.routes.js';
+import bookRoutes from './routes/book.routes.js';
 
 import userRepo from './repos/user.repo.js';
 
@@ -54,7 +56,9 @@ app.use((req, res, next) => {
 });
 
 app.use(flashMiddleware);
+
 app.use(authRoutes);
+app.use(bookRoutes);
 
 app.use('/', (req, res) => {
   res.render('home', { title: 'Home' });
