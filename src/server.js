@@ -6,6 +6,8 @@ import session from 'express-session';
 import flashMiddleware from './middleware/flash.js';
 import authRoutes from './routes/auth.routes.js';
 
+import userRepo from './repos/user.repo.js';
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -44,7 +46,7 @@ app.use(
 
 app.use((req, res, next) => {
   if (req.session.userId) {
-    res.locals.currentUser = usersRepo.findById(req.session.userId);
+    res.locals.currentUser = userRepo.findById(req.session.userId);
   } else {
     res.locals.currentUser = null;
   }
