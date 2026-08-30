@@ -1,0 +1,34 @@
+<h1 style="margin-bottom: 1.5rem;">Tutti gli Autori</h1>
+
+<!-- Optional Search Form for Authors -->
+<form class="search-form" method="GET" action="/authors">
+  <input 
+    type="text" 
+    name="query" 
+    class="search-input" 
+    placeholder="Cerca autore per nome..." 
+    value="{{query}}"
+  >
+  <button type="submit" class="btn-primary">Cerca</button>
+</form>
+
+{{#if authors.length}}
+  <ul class="book-list">
+    {{#each authors}}
+      <li class="book-card" style="display: flex; align-items: center; justify-content: space-between;">
+        <div>
+          <h2 style="margin: 0 0 0.25rem 0; font-size: 1.25rem;">
+            <a href="/authors/{{this.id}}">{{this.name}}</a>
+          </h2>
+          <p class="meta" style="margin: 0;">
+            Libri scritti: {{this.books.length}}
+          </p>
+        </div>
+        <a href="/authors/{{this.id}}" class="button-link" style="padding: 0.4rem 0.8rem; font-size: 0.9rem;">Dettagli</a>
+      </li>
+    {{/each}}
+  </ul>
+{{else}}
+  <p class="meta">Nessun autore trovato.</p>
+{{/if}}
+

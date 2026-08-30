@@ -1,0 +1,22 @@
+<div class="actions" style="margin-bottom: 1.5rem;">
+  <a href="/authors" class="button-link">&larr; Torna agli Autori</a>
+</div>
+
+<div class="form-card" style="max-width: 100%; margin-bottom: 2rem;">
+  <h1 style="margin: 0; color: var(--primary);">{{author.name}}</h1>
+</div>
+
+<h2 style="margin-bottom: 1rem;">Libri di {{author.name}}</h2>
+
+{{#if author.books.length}}
+  <ul class="book-list">
+    {{#each author.books}}
+      <li class="book-card">
+        <strong><a href="/books/{{this.id}}">{{this.title}}</a></strong>
+      </li>
+    {{/each}}
+  </ul>
+{{else}}
+  <p class="meta">Nessun libro trovato per questo autore.</p>
+{{/if}}
+
