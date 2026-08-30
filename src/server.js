@@ -7,6 +7,7 @@ import flashMiddleware from './middleware/flash.js';
 
 import authRoutes from './routes/auth.routes.js';
 import bookRoutes from './routes/book.routes.js';
+import authorRoutes from './routes/author.routes.js';
 
 import userRepo from './repos/user.repo.js';
 
@@ -59,6 +60,7 @@ app.use(flashMiddleware);
 
 app.use(authRoutes);
 app.use(bookRoutes);
+app.use(authorRoutes);
 
 app.use('/', (req, res) => {
   res.render('home', { title: 'Home' });
