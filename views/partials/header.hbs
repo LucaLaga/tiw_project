@@ -20,13 +20,13 @@
         <div class="dropdown">
           <button type="button" class="dropdown-btn">Prestiti &#9662;</button>
           <div class="dropdown-content">
-            <a href="/my/loans">I miei prestiti</a>
-            <a href="/organizer/loans">Tutti i prestiti</a>
+            <a href="/loans/personal">I miei prestiti</a>
+            <a href="/loans">Tutti i prestiti</a>
           </div>
         </div>
       {{else}}
         <!-- Standard User Link -->
-        <a href="/my/loans">I miei prestiti</a>
+        <a href="/loans/personal">I miei prestiti</a>
       {{/if}}
 
       <span class="user-pill">Ciao, {{currentUser.name}}</span>
