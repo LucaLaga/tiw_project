@@ -58,10 +58,6 @@
           <button type="submit" class="btn btn-primary">Prendi in prestito</button>
         </form>
       {{/if}}
-
-      <form method="POST" action="/catalog/{{book.id}}/return" class="inline-form">
-        <button type="submit" class="btn btn-secondary">Restituisci</button>
-      </form>
     </div>
     
     {{#if (eq currentUser.role "organizer")}}
