@@ -6,6 +6,7 @@ const PWD = bcrypt.hashSync('password123', 10);
 const users = [
   { email: 'admin@library.it', name: 'Alice Admin', role: 'organizer' },
   { email: 'bob@test.it',      name: 'Bob Reader',  role: 'user' },
+  { email: 'charlie@test.it',  name: 'Charlie User', role: 'user' },
 ];
 
 const authors = [
