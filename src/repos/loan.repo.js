@@ -22,7 +22,6 @@ function listAll(userId = null) {
   }));
 }
 
-
 const findByIdStmt = db.prepare(`
   SELECT
     l.id, l.user_id, l.book_id, l.borrowed_at, l.returned_at,
@@ -46,28 +45,57 @@ function findById(id) {
 }
 
 
+// --- BORROW LOGIC ---
 const insertStmt = db.prepare(`
   INSERT INTO loans (user_id, book_id)
   VALUES (@user_id, @book_id)
 `);
+const decrementBookStmt = db.prepare(`
+  UPDATE books SET quantity = quantity - 1 WHERE id = ?
+`);
+
+// Using a transaction to ensure both queries succeed or fail together
+const createLoanTx = db.transaction(({ user_id, book_id }) => {
+  decrementBookStmt.run(book_id);
+  const info = insertStmt.run({ user_id, book_id });
+  return info.lastInsertRowid;
+});
 
 function create({ user_id, book_id }) {
-  const info = insertStmt.run({ user_id, book_id });
-
-  return info.lastInsertRowid;
+  return createLoanTx({ user_id, book_id });
 }
 
 
+// --- RETURN LOGIC ---
 const updateStmt = db.prepare(`
   UPDATE loans
   SET returned_at = @returned_at
-  WHERE id = @id
+  WHERE id = @id AND returned_at IS NULL
+`);
+const incrementBookStmt = db.prepare(`
+  UPDATE books SET quantity = quantity + 1 WHERE id = ?
+`);
+const getLoanBookIdStmt = db.prepare(`
+  SELECT book_id FROM loans WHERE id = ? AND returned_at IS NULL
 `);
 
-function update({ id, returned_at }) {
-  const info = updateStmt.run({ id, returned_at });
+// Using a transaction to safely update the loan and increment the book
+const updateLoanTx = db.transaction(({ id, returned_at }) => {
+  // First, verify the loan exists and hasn't been returned yet
+  const loan = getLoanBookIdStmt.get(id);
+  if (!loan) return false;
 
-  return info.changes > 0;
+  const info = updateStmt.run({ id, returned_at });
+  
+  if (info.changes > 0) {
+    incrementBookStmt.run(loan.book_id);
+    return true;
+  }
+  return false;
+});
+
+function update({ id, returned_at }) {
+  return updateLoanTx({ id, returned_at });
 }
 
 
@@ -80,6 +108,5 @@ function remove(id) {
 
   return info.changes > 0;
 }
-
 
 export default { listAll, findById, create, update, remove };
