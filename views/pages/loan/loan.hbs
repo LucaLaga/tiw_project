@@ -1,5 +1,5 @@
 <div class="actions">
-  <a href="javascript:history.back()" class="button-link">&larr; Torna ai Prestiti</a>
+  <a href="javascript:history.back()" class="btn btn-primary">&larr; Torna ai Prestiti</a>
 </div>
 
 {{#if loan}}
@@ -42,13 +42,11 @@
     </table>
 
     {{#unless loan.returned_at}}
-      {{#if (eq currentUser.role "organizer")}}
         <div class="actions mt-1-5 justify-start">
           <form method="POST" action="/loans/{{loan.id}}/return" class="inline-form">
             <button type="submit" class="btn btn-secondary">Registra Restituzione</button>
           </form>
         </div>
-      {{/if}}
     {{/unless}}
 
   </article>
