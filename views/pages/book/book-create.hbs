@@ -1,0 +1,99 @@
+<div class="actions">
+  <a href="/books" class="btn btn-primary">&larr; Torna al Catalogo</a>
+</div>
+
+<article class="form-card">
+  <h1 class="mt-0 mb-1-5 no-border">Crea Libro</h1>
+
+  <form method="POST" action="/books/create">
+    
+    <div class="form-group">
+      <label for="title">Titolo</label>
+      <input 
+        type="text" 
+        id="title" 
+        name="title" 
+        required
+      >
+    </div>
+
+    <div class="form-group">
+      <label for="isbn">ISBN</label>
+      <input 
+        type="text" 
+        id="isbn" 
+        name="isbn" 
+        required
+      >
+    </div>
+
+    <div class="form-row">
+      <div>
+        <label for="publication_year">Anno di Pubblicazione</label>
+        <input 
+          type="number" 
+          id="publication_year" 
+          name="publication_year" 
+          required
+        >
+      </div>
+      
+      <div>
+        <label for="pages">Pagine</label>
+        <input 
+          type="number" 
+          id="pages" 
+          name="pages" 
+          required
+        >
+      </div>
+      
+      <div>
+        <label for="quantity">Quantità Dispo.</label>
+        <input 
+          type="number" 
+          id="quantity" 
+          name="quantity" 
+          min="0"
+          required
+        >
+      </div>
+    </div>
+
+    <div class="form-group mb-1-5">
+      <label for="description">Descrizione</label>
+      <textarea 
+        id="description" 
+        name="description" 
+        rows="5" 
+        required
+      ></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="authors">Autori</label>
+      <input 
+        type="text" 
+        id="authors" 
+        name="authors" 
+        required
+      >
+    </div>
+
+    <div class="form-group">
+      <label for="genres">Generi</label>
+      <input 
+        type="text" 
+        id="genres" 
+        name="genres" 
+        required
+      >
+    </div>
+
+    <div class="actions mt-1-5 justify-start">
+      <button type="submit" class="btn btn-primary">Crea</button>
+      <a href="/books" class="btn btn-secondary">Annulla</a>
+    </div>
+
+  </form>
+</article>

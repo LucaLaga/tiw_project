@@ -14,7 +14,6 @@
 
     <!-- User Authentication & Controls -->
     {{#if currentUser}}
-      
       {{#if (eq currentUser.role "organizer")}}
         <!-- Organizer Dropdown -->
         <div class="dropdown">
@@ -34,7 +33,6 @@
       <form method="post" action="/logout" class="inline-form ml-0-5">
         <button type="submit" class="link-button">Esci</button>
       </form>
-      
     {{else}}
       <!-- Unauthenticated Links -->
       <a href="/login">Accedi</a>

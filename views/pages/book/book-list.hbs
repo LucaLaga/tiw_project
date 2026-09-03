@@ -1,21 +1,30 @@
 <h1>{{ title }}</h1>
 
-<form method="GET" action="" class="search-form">
-  <input
-    type="text"
-    name="q"
-    placeholder="Search by Title or ISBN..."
-    value="{{searchQuery}}"
-    class="search-input"
-  >
-  <button type="submit" class="btn btn-primary">Search</button>
+<div class="search-container">
+  <form method="GET" action="" class="search-form">
+    <input
+      type="text"
+      name="q"
+      placeholder="Search by Title or ISBN..."
+      value="{{searchQuery}}"
+      class="search-input"
+    >
+    <button type="submit" class="btn btn-primary">Search</button>
 
-  {{#if searchQuery}}
-    <a href="?" class="btn btn-secondary">Clear</a>
+    {{#if searchQuery}}
+      <a href="?" class="btn btn-secondary">Clear</a>
+    {{/if}}
+  </form>
+
+  {{#if currentUser}}
+    {{#if (eq currentUser.role 'organizer')}}
+      <a href="/books/create" class="btn btn-primary">Aggiungi Libro</a>
+    {{/if}}
   {{/if}}
-</form>
+</div>
 
 {{#if books.length}}
+
   <ul class="item-list">
     {{#each books}}
       <li class="item-card">
