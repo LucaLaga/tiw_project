@@ -36,13 +36,20 @@ router.post('/register', async (req, res) => {
     });
   }
 
-  const password_hash = await bcrypt.hash(password, BCRYPT_ROUNDS);
-
-  const userId = userRepo.create({ email, password_hash, name });
-
-  req.session.userId = userId;
-  req.redirect(303, '/books');
+  try {
+    const password_hash = await bcrypt.hash(password, BCRYPT_ROUNDS);
+    const userId = userRepo.create({ email, password_hash, name });
+    req.session.userId = userId;
+    res.redirect(303, '/books');
+  } catch (e) {
+    res.status(500).render('auth/register', {
+      title: 'Crea un account',
+      form: { email, name },
+      errors: ['Errore interno del server.'],
+    });
+  }
 });
+
 
 router.get('/login', (req, res) => {
   res.render('auth/login', {
