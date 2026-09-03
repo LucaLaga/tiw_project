@@ -1,5 +1,5 @@
 :root {
-  /* Provided Palette */
+  /* Palette */
   --c-100: #f8f9fa;
   --c-200: #e9ecef;
   --c-300: #dee2e6;
@@ -10,7 +10,7 @@
   --c-800: #343a40;
   --c-900: #212529;
 
-  /* Specific mapping for layout styles */
+  /* Semantic mapping */
   --muted-foreground: var(--c-500);
   --primary: var(--c-800);
   --color-accent: var(--c-900);
@@ -230,14 +230,25 @@ input:focus, textarea:focus {
 }
 
 /* --- Search Forms --- */
+.search-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
 .search-form {
   display: flex;
   gap: 0.5rem;
-  margin-bottom: 2rem;
+  margin-bottom: 0;
   flex-wrap: wrap;
   background-color: transparent;
   padding: 0;
   border: none;
+  align-items: center;
+  width: 100%;
 }
 
 .search-input {
@@ -471,7 +482,7 @@ input:focus, textarea:focus {
   font-weight: 500;
 }
 
-/* --- Utility Classes (Replaces Inline Styles) --- */
+/* --- Utility Classes --- */
 .m-0 { margin: 0 !important; }
 .mt-0 { margin-top: 0 !important; }
 .mt-1-5 { margin-top: 1.5rem !important; }
@@ -492,7 +503,7 @@ input:focus, textarea:focus {
   justify-content: space-between;
   align-items: center;
   border-top: 1px solid var(--c-900);
-  margin-top: 4rem; /* Adjusted from auto based on new specs */
+  margin-top: 4rem;
 }
 
 .footer-copy {
@@ -513,3 +524,4 @@ input:focus, textarea:focus {
   color: var(--c-100);
   text-decoration: underline;
 }
+
