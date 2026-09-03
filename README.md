@@ -41,7 +41,7 @@ node src/db/init.js
 3. **Seed the Database:**
 Populate the database with test authors, genres, books, and users.
 ```bash
-node src/seed.js
+node src/db/seed.js
 ```
 
 4. **Start the Server:**
