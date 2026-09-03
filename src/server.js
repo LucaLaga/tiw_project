@@ -50,11 +50,7 @@ app.use(
 );
 
 app.use((req, res, next) => {
-  if (req.session.userId) {
-    res.locals.currentUser = userRepo.findById(req.session.userId);
-  } else {
-    res.locals.currentUser = null;
-  }
+  res.locals.currentUser = req.session.userId ? userRepo.findById(req.session.userId) : null;
   next();
 });
 
@@ -66,10 +62,10 @@ app.use(authorRoutes);
 app.use(genreRoutes);
 app.use(loanRoutes);
 
-app.use('/', (req, res) => {
+app.get('/', (req, res) => {
   res.render('home', { title: 'Home' });
-})
+});
 
 app.listen(PORT, () => {
-  console.log(`listening http://localhost:${PORT}`)
-})
+  console.log(`listening http://localhost:${PORT}`);
+});
