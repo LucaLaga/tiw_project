@@ -1,4 +1,5 @@
 import db from '../db/connection.js';
+import { parseJsonColumns } from './utils.js';
 
 const listAllStmt = db.prepare(`
   SELECT
@@ -13,13 +14,7 @@ const listAllStmt = db.prepare(`
 `);
 
 function listAll(userId = null) {
-  const rows = listAllStmt.all({ user_id: userId });
-
-  return rows.map(row => ({
-    ...row,
-    user: JSON.parse(row.user),
-    book: JSON.parse(row.book)
-  }));
+  return parseJsonColumns(listAllStmt.all({ user_id: userId }), ['user', 'book']);
 }
 
 const findByIdStmt = db.prepare(`
@@ -35,14 +30,9 @@ const findByIdStmt = db.prepare(`
 
 function findById(id) {
   const row = findByIdStmt.get(id);
-  if (!row) return undefined;
-
-  return {
-    ...row,
-    user: JSON.parse(row.user),
-    book: JSON.parse(row.book)
-  };
+  return row ? parseJsonColumns(row, ['user', 'book']) : undefined;
 }
+
 
 
 // --- BORROW LOGIC ---

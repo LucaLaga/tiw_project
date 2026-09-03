@@ -1,4 +1,5 @@
 import db from '../db/connection.js';
+import { parseJsonColumns } from './utils.js';
 
 const listAllStmt = db.prepare(`
   SELECT
@@ -18,13 +19,7 @@ const listAllStmt = db.prepare(`
 `);
 
 function listAll(searchQuery = null) {
-  const rows = listAllStmt.all({ query: searchQuery });
-
-  return rows.map(row => ({
-    ...row,
-    authors: JSON.parse(row.authors),
-    genres: JSON.parse(row.genres)
-  }));
+  return parseJsonColumns(listAllStmt.all({ query: searchQuery }), ['authors', 'genres']);
 }
 
 
@@ -46,14 +41,9 @@ const findByIdStmt = db.prepare(`
 
 function findById(id) {
   const row = findByIdStmt.get(id);
-  if (!row) return undefined;
-
-  return {
-    ...row,
-    authors: JSON.parse(row.authors),
-    genres: JSON.parse(row.genres)
-  };
+  return row ? parseJsonColumns(row, ['authors', 'genres']) : undefined;
 }
+
 
 
 const insertStmt = db.prepare(`
@@ -64,7 +54,30 @@ const insertStmt = db.prepare(`
 function create({ isbn, title, publication_year, pages, quantity, description }) {
   const info = insertStmt.run({ isbn, title, publication_year, pages, quantity, description });
 
-  return info.lastInsertedRowId;
+  return info.lastInsertRowid;
+}
+
+const addAuthorStmt = db.prepare(`
+  INSERT INTO authors_books (author_id, book_id)
+  VALUES (@author_id, @book_id)
+`);
+
+function addAuthor({ author_id, book_id }) {
+  const info = addAuthorStmt.run({ author_id, book_id });
+
+  return info.lastInsertRowid;
+}
+
+
+const addGenreStmt = db.prepare(`
+  INSERT INTO genres_books (genre_id, book_id)
+  VALUES (@genre_id, @book_id)
+`);
+
+function addGenre({ genre_id, book_id }) {
+  const info = addGenreStmt.run({ genre_id, book_id });
+
+  return info.lastInsertRowid;
 }
 
 
@@ -97,4 +110,4 @@ function remove(id) {
 }
 
 
-export default { listAll, findById, create, update, remove }
+export default { listAll, findById, create, addAuthor, addGenre, update, remove }

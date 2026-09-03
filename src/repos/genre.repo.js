@@ -1,4 +1,5 @@
 import db from '../db/connection.js';
+import { parseJsonColumns } from './utils.js';
 
 const listAllStmt = db.prepare(`
   SELECT
@@ -16,12 +17,7 @@ const listAllStmt = db.prepare(`
 `);
 
 function listAll(searchQuery = null){
-  const rows = listAllStmt.all({ query: searchQuery });
-
-  return rows.map(row => ({
-    ...row,
-    books: JSON.parse(row.books)
-  }));
+  return parseJsonColumns(listAllStmt.all({ query: searchQuery }), ['books']);
 }
 
 const findByIdStmt = db.prepare(`
@@ -40,22 +36,26 @@ const findByIdStmt = db.prepare(`
 
 function findById(id) {
   const row = findByIdStmt.get(id);
-
-  if(!row) return undefined;
-
-  return {
-    ...row,
-    books: JSON.parse(row.books)
-  };
+  return row ? parseJsonColumns(row, ['books']) : undefined;
 }
+
 
 const insertStmt = db.prepare(`
   INSERT INTO genres (name)
   VALUES (?)
 `);
 
+const findByNameStmt = db.prepare(`
+  SELECT id FROM genres WHERE name = ?
+`);
+
+function findByName(name) {
+  return findByNameStmt.get(name);
+}
+
 function create(name) {
-  return insertStmt.run(name).lastInsertRowid;
+  const info = insertStmt.run(name);
+  return info.lastInsertRowid;
 }
 
 const updateStmt = db.prepare(`
@@ -65,7 +65,7 @@ const updateStmt = db.prepare(`
 `);
 
 function update(values) {
-  return updateStmt.run(values).changes;
+  return updateStmt.run(values).changes > 0;
 }
 
 const deleteStmt = db.prepare(`
@@ -73,7 +73,7 @@ const deleteStmt = db.prepare(`
 `);
 
 function remove(id) {
-  return deleteStmt.run(id).changes;
+  return deleteStmt.run(id).changes > 0;
 }
 
-export default { listAll, findById, create, update, remove };
+export default { listAll, findById, findByName, create, update, remove };

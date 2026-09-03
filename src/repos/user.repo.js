@@ -7,7 +7,7 @@ const insertStmt = db.prepare(`
 
 function create({ email, password_hash, name, role = 'user' }) {
   const info = insertStmt.run({ email, password_hash, name, role });
-  return info.lastInsertedRowid;
+  return info.lastInsertRowid;
 }
 
 
@@ -31,7 +31,7 @@ function findById(id) {
 }
 
 
-const findAllStmt = db.prepare(`\
+const findAllStmt = db.prepare(`
   SELECT id, email, name, role, created_at
   FROM users
 `);
@@ -54,9 +54,9 @@ const updateStmt = db.prepare(`
 function update(id, { email, password_hash, name, role }) {
   const info = updateStmt.run({
     id,
-    wmail: email !== undefined ? email : null,
+    email: email !== undefined ? email : null,
     password_hash: password_hash !== undefined ? password_hash : null,
-    naame: name !== undefined ? name : null,
+    name: name !== undefined ? name : null,
     role: role !== undefined ? role : null
   });
 
