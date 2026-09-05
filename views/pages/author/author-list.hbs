@@ -13,7 +13,7 @@
 </form>
 
 {{#if authors.length}}
-  <ul class="item-list">
+  <ul class="item-list mt-1-5">
     {{#each authors}}
       <li class="item-card row">
         <div>
@@ -28,6 +28,20 @@
       </li>
     {{/each}}
   </ul>
+
+  <div class="pagination mt-1-5">
+    {{#if (gt currentPage 1)}}
+      <a href="?page={{subtract currentPage 1}}&query={{query}}" class="btn btn-secondary btn-sm">Previous</a>
+    {{else}}
+      <span class="btn btn-secondary btn-sm" style="opacity: 0.5; cursor: not-allowed;">Previous</span>
+    {{/if}}
+    <span class="page-info">Page {{currentPage}}</span>
+    {{#if hasNextPage}}
+      <a href="?page={{add currentPage 1}}&query={{query}}" class="btn btn-secondary btn-sm">Next</a>
+    {{else}}
+      <span class="btn btn-secondary btn-sm" style="opacity: 0.5; cursor: not-allowed;">Next</span>
+    {{/if}}
+  </div>
 {{else}}
   <p class="meta">Nessun autore trovato.</p>
 {{/if}}
