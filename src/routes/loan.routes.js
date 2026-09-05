@@ -46,7 +46,24 @@ router.post('/books/:id/borrow', auth.requireAuth, (req, res) => {
 // POST /loans/:id/return - Mark a book as returned (Requires authentication)
 router.post('/loans/:id/return', auth.requireAuth, (req, res) => {
   const loanId = Number.parseInt(req.params.id, 10);
+  const loan = loanRepo.findById(loanId);
+
+  if (!loan) {
+    req.session.flash = { type: 'error', message: 'Prestito non trovato.' };
+    return res.redirect(303, '/loans/personal');
+  }
+
+  const isOwner = loan.user_id === req.session.userId;
+  const currentUser = res.locals.currentUser;
+  const isOrganizer = currentUser && currentUser.role === 'organizer';
+
+  if (!isOwner && !isOrganizer) {
+    req.session.flash = { type: 'error', message: 'Non puoi restituire un prestito che non ti appartiene.' };
+    return res.redirect(303, '/loans/personal');
+  }
+
   const returnedAt = new Date().toISOString();
+
 
   // update() now handles the quantity increment internally and prevents double-returns
   const success = loanRepo.update({ id: loanId, returned_at: returnedAt });
@@ -63,6 +80,15 @@ router.post('/loans/:id/return', auth.requireAuth, (req, res) => {
 // ==========================================
 // Organizer Routes
 // ==========================================
+
+// GET /loans/overdue - Requires organizer role
+router.get('/loans/overdue', auth.requireOrganizer, (req, res) => {
+  const loans = loanRepo.listOverdue();
+  res.render('pages/loan/loan-list', {
+    title: 'Prestiti Scaduti',
+    loans
+  });
+});
 
 // GET /loans - Requires organizer role
 router.get('/loans', auth.requireOrganizer, (req, res) => {
