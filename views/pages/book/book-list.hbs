@@ -24,7 +24,6 @@
 </div>
 
 {{#if books.length}}
-
   <ul class="item-list">
     {{#each books}}
       <li class="item-card">
@@ -46,6 +45,20 @@
       </li>
     {{/each}}
   </ul>
+
+  <div class="pagination mt-1-5">
+    {{#if (gt currentPage 1)}}
+      <a href="?page={{subtract currentPage 1}}&q={{searchQuery}}" class="btn btn-secondary btn-sm">Previous</a>
+    {{else}}
+      <span class="btn btn-secondary btn-sm" style="opacity: 0.5; cursor: not-allowed;">Previous</span>
+    {{/if}}
+    <span class="page-info">Page {{currentPage}}</span>
+    {{#if hasNextPage}}
+      <a href="?page={{add currentPage 1}}&q={{searchQuery}}" class="btn btn-secondary btn-sm">Next</a>
+    {{else}}
+      <span class="btn btn-secondary btn-sm" style="opacity: 0.5; cursor: not-allowed;">Next</span>
+    {{/if}}
+  </div>
 {{else}}
   <p class="meta">Nessun libro trovato.</p>
 {{/if}}
