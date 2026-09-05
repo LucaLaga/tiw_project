@@ -14,10 +14,11 @@ const listAllStmt = db.prepare(`
   FROM authors a
   WHERE (@query IS NULL OR a.name LIKE '%' || @query || '%')
   ORDER BY a.name ASC
+  LIMIT @limit OFFSET @offset
 `);
 
-function listAll(searchQuery = null){
-  return parseJsonColumns(listAllStmt.all({ query: searchQuery }), ['books']);
+function listAll(searchQuery = null, limit = 10, offset = 0){
+  return parseJsonColumns(listAllStmt.all({ query: searchQuery, limit, offset }), ['books']);
 }
 
 const findByIdStmt = db.prepare(`
