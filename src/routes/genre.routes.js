@@ -6,17 +6,24 @@ const router = express.Router();
 
 router.get('/genres', (req, res) => {
   const searchQuery = req.query.query || null;
-  const genres = genreRepo.listAll(searchQuery);
+  const page = Number.parseInt(req.query.page, 10) || 1;
+  const limit = 10;
+  const offset = (page - 1) * limit;
+  
+  const genres = genreRepo.listAll(searchQuery, limit, offset);
 
   res.render('pages/genre/genres-list', {
     title: 'Generi - Libreria Digitale',
     genres,
-    query: searchQuery
+    query: searchQuery,
+    currentPage: page,
+    hasNextPage: genres.length === limit
   });
 });
 
 router.get('/genres/:id', (req, res) => {
-  const genre = genreRepo.findById(req.params.id);
+  const id = Number.parseInt(req.params.id, 10);
+  const genre = genreRepo.findById(id);
   
   if (!genre) {
     return res.redirect('/genres');
