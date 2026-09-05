@@ -1,0 +1,31 @@
+<h1 class="page-title">Gestione Utenti</h1>
+
+<div class="card">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>Ruolo</th>
+        <th>Azioni</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each users}}
+        <tr>
+          <td>{{this.name}}</td>
+          <td>{{this.email}}</td>
+          <td>{{this.role}}</td>
+          <td>
+            {{#if (and (eq currentUser.role 'organizer') (eq this.role 'user'))}}
+              <form method="POST" action="/users/{{this.id}}/promote" style="display:inline">
+                <input type="hidden" name="role" value="organizer">
+                <button type="submit" class="btn btn-sm btn-secondary">Promuovi a Organizer</button>
+              </form>
+            {{/if}}
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
