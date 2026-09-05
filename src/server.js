@@ -4,6 +4,7 @@ import path from 'path';
 import session from 'express-session';
 
 import flashMiddleware from './middleware/flash.js';
+import errorHandler from './middleware/error.js';
 
 import authRoutes from './routes/auth.routes.js';
 import bookRoutes from './routes/book.routes.js';
@@ -61,6 +62,8 @@ app.use(bookRoutes);
 app.use(authorRoutes);
 app.use(genreRoutes);
 app.use(loanRoutes);
+
+app.use(errorHandler);
 
 app.get('/', (req, res) => {
   res.render('home', { title: 'Home' });
