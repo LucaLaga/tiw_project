@@ -16,21 +16,23 @@
     {{#if currentUser}}
       {{#if (eq currentUser.role "organizer")}}
         <!-- Organizer Dropdown -->
-        <div class="dropdown">
-          <button type="button" class="dropdown-btn">Prestiti &#9662;</button>
-          <div class="dropdown-content">
-            <a href="/loans/personal">I miei prestiti</a>
-            <a href="/loans">Tutti i prestiti</a>
+          <div class="dropdown">
+            <button type="button" class="dropdown-btn">Prestiti &#9662;</button>
+            <div class="dropdown-content">
+              <a href="/loans/personal">I miei prestiti</a>
+              <a href="/loans">Tutti i prestiti</a>
+              <a href="/loans/overdue">Prestiti Scaduti</a>
+            </div>
           </div>
-        </div>
       {{else}}
         <!-- Standard User Link -->
         <a href="/loans/personal">I miei prestiti</a>
       {{/if}}
 
-      <span class="user-pill">Ciao, {{currentUser.name}}</span>
-      
-      <form method="post" action="/logout" class="inline-form ml-0-5">
+       <span class="user-pill">Ciao, {{currentUser.name}}</span>
+       <a href="/profile" class="link-button">Profilo</a>
+       
+       <form method="post" action="/logout" class="inline-form ml-0-5">
         <button type="submit" class="link-button">Esci</button>
       </form>
     {{else}}
