@@ -21,7 +21,30 @@ router.get('/books/create', auth.requireOrganizer, (req, res) => {
 router.post('/books/create', auth.requireOrganizer, (req, res) => {
   const { isbn, title, publication_year, pages, quantity, description, authors, genres } = req.body;
 
-  const book_id = booksRepo.create({ isbn, title, publication_year, pages, quantity, description });
+  const pubYear = Number.parseInt(publication_year, 10);
+  const pgCount = Number.parseInt(pages, 10);
+  const qty = Number.parseInt(quantity, 10);
+
+  const errors = [];
+  if (!isbn?.trim()) errors.push('ISBN obbligatorio.');
+  if (!title?.trim()) errors.push('Titolo obbligatorio.');
+  if (isNaN(pubYear) || pubYear < 0 || pubYear > new Date().getFullYear()) errors.push('Anno di pubblicazione non valido.');
+  if (isNaN(pgCount) || pgCount <= 0) errors.push('Numero di pagine non valido.');
+  if (isNaN(qty) || qty < 0) errors.push('Quantità non valida.');
+
+  if (errors.length > 0) {
+    req.session.flash = { type: 'error', message: errors.join(' ') };
+    return res.redirect(303, '/books/create');
+  }
+
+  const book_id = booksRepo.create({ 
+    isbn: isbn.trim(), 
+    title: title.trim(), 
+    publication_year: pubYear, 
+    pages: pgCount, 
+    quantity: qty, 
+    description: (description || '').trim() 
+  });
 
   if (!book_id) {
     req.session.flash = { type: 'error', message: 'Errore nella Creazione del Libro' };
@@ -50,14 +73,33 @@ router.post('/books/create', auth.requireOrganizer, (req, res) => {
 
 router.get('/books', (req, res) => {
   const searchQuery = req.query.q || null;
-  const books = booksRepo.listAll(searchQuery);
+  const authorQuery = req.query.author || null;
+  const genreQuery = req.query.genre || null;
+  const page = Number.parseInt(req.query.page, 10) || 1;
+  const limit = 5;
+  const offset = (page - 1) * limit;
 
-  res.render('pages/book/book-list', { title: 'Catalogo', books: books, searchQuery: searchQuery });
+  const books = booksRepo.listAll(searchQuery, authorQuery, genreQuery, limit, offset);
+
+  const last_page = Math.ceil(books.length / limit);
+
+  res.render('pages/book/book-list', { 
+    title: 'Catalogo', 
+    books: books.slice(offset, offset+5), 
+    searchQuery: searchQuery,
+    currentPage: page,
+    hasNextPage: (offset+5) < books.length
+  });
 });
 
 router.get('/books/:id', (req, res) => {
   const id = Number.parseInt(req.params.id, 10);
   const book = booksRepo.findById(id);
+
+  if (!book) {
+    req.session.flash = { type: 'error', message: 'Libro non trovato.' };
+    return res.redirect(303, '/books');
+  }
 
   res.render('pages/book/book', { title: book.title, book: book })
 });
@@ -81,13 +123,29 @@ router.post('/books/:id/edit', auth.requireOrganizer, (req, res) => {
   const id = Number.parseInt(req.params.id, 10);
   const { isbn, title, publication_year, pages, quantity, description } = req.body;
 
+  const pubYear = Number.parseInt(publication_year, 10);
+  const pgCount = Number.parseInt(pages, 10);
+  const qty = Number.parseInt(quantity, 10);
+
+  const errors = [];
+  if (!isbn?.trim()) errors.push('ISBN obbligatorio.');
+  if (!title?.trim()) errors.push('Titolo obbligatorio.');
+  if (isNaN(pubYear) || pubYear < 0 || pubYear > new Date().getFullYear()) errors.push('Anno di pubblicazione non valido.');
+  if (isNaN(pgCount) || pgCount <= 0) errors.push('Numero di pagine non valido.');
+  if (isNaN(qty) || qty < 0) errors.push('Quantità non valida.');
+
+  if (errors.length > 0) {
+    req.session.flash = { type: 'error', message: errors.join(' ') };
+    return res.redirect(303, `/books/${id}/edit`);
+  }
+
   const success = booksRepo.update({
     id,
     isbn: String(isbn || '').trim(),
     title: String(title || '').trim(),
-    publication_year: Number.parseInt(publication_year, 10),
-    pages: Number.parseInt(pages, 10),
-    quantity: Number.parseInt(quantity, 10),
+    publication_year: pubYear,
+    pages: pgCount,
+    quantity: qty,
     description: String(description || '').trim()
   });
 
