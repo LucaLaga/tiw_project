@@ -14,10 +14,11 @@ const listAllStmt = db.prepare(`
   FROM genres g
   WHERE (@query IS NULL OR g.name LIKE '%' || @query || '%')
   ORDER BY g.name ASC
+  LIMIT @limit OFFSET @offset
 `);
 
-function listAll(searchQuery = null){
-  return parseJsonColumns(listAllStmt.all({ query: searchQuery }), ['books']);
+function listAll(searchQuery = null, limit = 10, offset = 0){
+  return parseJsonColumns(listAllStmt.all({ query: searchQuery, limit, offset }), ['books']);
 }
 
 const findByIdStmt = db.prepare(`
