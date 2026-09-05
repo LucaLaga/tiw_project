@@ -494,6 +494,21 @@ input:focus, textarea:focus {
 .text-primary { color: var(--primary) !important; }
 .max-w-100 { max-width: 100% !important; }
 
+/* --- Pagination --- */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.page-info {
+  font-size: 0.9rem;
+  color: var(--c-600);
+  font-weight: 500;
+}
+
 /* --- Footer --- */
 .site-footer {
   background-color: var(--c-800);
