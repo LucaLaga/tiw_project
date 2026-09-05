@@ -13,12 +13,18 @@ const authors = [
   { name: 'George Orwell' },
   { name: 'J.R.R. Tolkien' },
   { name: 'Frank Herbert' },
+  { name: 'Isaac Asimov' },
+  { name: 'Philip K. Dick' },
+  { name: 'Ursula K. Le Guin' },
+  { name: 'Aldous Huxley' },
 ];
 
 const genres = [
   { name: 'Science Fiction' },
   { name: 'Fantasy' },
   { name: 'Dystopian' },
+  { name: 'Mystery' },
+  { name: 'Philosophy' },
 ];
 
 const books = [
@@ -29,7 +35,6 @@ const books = [
     pages: 328,
     quantity: 5,
     description: 'A dystopian social science fiction novel and cautionary tale.',
-    // Custom arrays to easily map relationships during insertion
     authorNames: ['George Orwell'],
     genreNames: ['Science Fiction', 'Dystopian']
   },
@@ -52,6 +57,126 @@ const books = [
     description: 'A foundational science fiction novel set on the desert planet Arrakis.',
     authorNames: ['Frank Herbert'],
     genreNames: ['Science Fiction']
+  },
+  {
+    isbn: '978-0553293357',
+    title: 'Foundation',
+    publication_year: 1951,
+    pages: 255,
+    quantity: 4,
+    description: 'The first book in the galactic empire saga.',
+    authorNames: ['Isaac Asimov'],
+    genreNames: ['Science Fiction']
+  },
+  {
+    isbn: '978-0544336652',
+    title: 'The Fellowship of the Ring',
+    publication_year: 1954,
+    pages: 423,
+    quantity: 3,
+    description: 'The first part of The Lord of the Rings.',
+    authorNames: ['J.R.R. Tolkien'],
+    genreNames: ['Fantasy']
+  },
+  {
+    isbn: '978-0544336669',
+    title: 'The Two Towers',
+    publication_year: 1954,
+    pages: 352,
+    quantity: 3,
+    description: 'The second part of The Lord of the Rings.',
+    authorNames: ['J.R.R. Tolkien'],
+    genreNames: ['Fantasy']
+  },
+  {
+    isbn: '978-0544336676',
+    title: 'The Return of the King',
+    publication_year: 1955,
+    pages: 416,
+    quantity: 3,
+    description: 'The final part of The Lord of the Rings.',
+    authorNames: ['J.R.R. Tolkien'],
+    genreNames: ['Fantasy']
+  },
+  {
+    isbn: '978-0345339706',
+    title: 'Do Androids Dream of Electric Sheep?',
+    publication_year: 1968,
+    pages: 210,
+    quantity: 2,
+    description: 'The novel that inspired Blade Runner.',
+    authorNames: ['Philip K. Dick'],
+    genreNames: ['Science Fiction', 'Philosophy']
+  },
+  {
+    isbn: '978-0441013593',
+    title: 'Ubik',
+    publication_year: 1969,
+    pages: 224,
+    quantity: 1,
+    description: 'A mind-bending story about life and death.',
+    authorNames: ['Philip K. Dick'],
+    genreNames: ['Science Fiction', 'Mystery']
+  },
+  {
+    isbn: '978-0441474528',
+    title: 'The Left Hand of Darkness',
+    publication_year: 1969,
+    pages: 286,
+    quantity: 3,
+    description: 'An exploration of gender and politics on a frozen world.',
+    authorNames: ['Ursula K. Le Guin'],
+    genreNames: ['Science Fiction', 'Philosophy']
+  },
+  {
+    isbn: '978-0441474412',
+    title: 'The Dispossessed',
+    publication_year: 1974,
+    pages: 300,
+    quantity: 2,
+    description: 'A story of an anarchist society on two different worlds.',
+    authorNames: ['Ursula K. Le Guin'],
+    genreNames: ['Science Fiction', 'Dystopian']
+  },
+  {
+    isbn: '978-0553293371',
+    title: 'I, Robot',
+    publication_year: 1950,
+    pages: 250,
+    quantity: 5,
+    description: 'A collection of short stories about the laws of robotics.',
+    authorNames: ['Isaac Asimov'],
+    genreNames: ['Science Fiction']
+  },
+  {
+    isbn: '978-0451526342',
+    title: 'Animal Farm',
+    publication_year: 1945,
+    pages: 112,
+    quantity: 6,
+    description: 'A fable about power and corruption.',
+    authorNames: ['George Orwell'],
+    genreNames: ['Dystopian']
+  },
+  {
+    isbn: '978-0452284247',
+    title: 'Brave New World',
+    publication_year: 1932,
+    pages: 268,
+    quantity: 4,
+    description: 'A futuristic society built on stability and genetic engineering.',
+    authorNames: ['Aldous Huxley'],
+    genreNames: ['Dystopian', 'Science Fiction']
+  },
+  {
+    isbn: '978-04410135 la',
+    title: 'The Man in the High Castle',
+    publication_year: 1962,
+    pages: 256,
+    quantity: 2,
+    description: 'An alternate history where the Axis powers won WWII.',
+    authorNames: ['Philip K. Dick'],
+    genreNames: ['Science Fiction', 'Dystopian']
   }
 ];
 
@@ -135,4 +260,3 @@ reset();
 console.log(`[seed] inseriti ${users.length} utenti e ${books.length} libri.`);
 console.log('[seed] credenziali di test (password: password123):');
 for (const u of users) console.log(`        - ${u.email} [${u.role}]`);
-
