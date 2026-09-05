@@ -18,8 +18,12 @@ const listAllStmt = db.prepare(`
   ORDER BY b.title ASC
 `);
 
-function listAll(searchQuery = null) {
-  return parseJsonColumns(listAllStmt.all({ query: searchQuery }), ['authors', 'genres']);
+function listAll(searchQuery = null, authorQuery = null, genreQuery = null, limit = 20, offset = 0) {
+  return parseJsonColumns(listAllStmt.all({ 
+    query: searchQuery, 
+    author: authorQuery, 
+    genre: genreQuery, 
+  }), ['authors', 'genres']);
 }
 
 
@@ -54,7 +58,7 @@ const insertStmt = db.prepare(`
 function create({ isbn, title, publication_year, pages, quantity, description }) {
   const info = insertStmt.run({ isbn, title, publication_year, pages, quantity, description });
 
-  return info.lastInsertRowid;
+  return info && info.lastInsertRowid ? info.lastInsertRowid : null;
 }
 
 const addAuthorStmt = db.prepare(`
