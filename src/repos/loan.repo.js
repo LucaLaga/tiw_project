@@ -11,10 +11,11 @@ const listAllStmt = db.prepare(`
   JOIN books b ON l.book_id = b.id
   WHERE (@user_id IS NULL OR l.user_id = @user_id)
   ORDER BY l.borrowed_at DESC
+  LIMIT @limit OFFSET @offset
 `);
 
-function listAll(userId = null) {
-  return parseJsonColumns(listAllStmt.all({ user_id: userId }), ['user', 'book']);
+function listAll(userId = null, limit = 20, offset = 0) {
+  return parseJsonColumns(listAllStmt.all({ user_id: userId, limit, offset }), ['user', 'book']);
 }
 
 const findByIdStmt = db.prepare(`
@@ -52,7 +53,12 @@ const createLoanTx = db.transaction(({ user_id, book_id }) => {
 });
 
 function create({ user_id, book_id }) {
-  return createLoanTx({ user_id, book_id });
+  try {
+    const id = createLoanTx({ user_id, book_id });
+    return id ? id : null;
+  } catch (e) {
+    return null;
+  }
 }
 
 
@@ -99,4 +105,20 @@ function remove(id) {
   return info.changes > 0;
 }
 
-export default { listAll, findById, create, update, remove };
+const listOverdueStmt = db.prepare(`
+  SELECT
+    l.id, l.user_id, l.book_id, l.borrowed_at, l.due_date,
+    json_object('id', u.id, 'name', u.name, 'email', u.email) AS user,
+    json_object('id', b.id, 'title', b.title, 'isbn', b.isbn) AS book
+  FROM loans l
+  JOIN users u ON l.user_id = u.id
+  JOIN books b ON l.book_id = b.id
+  WHERE l.returned_at IS NULL AND l.due_date < datetime('now')
+  ORDER BY l.due_date ASC
+`);
+
+function listOverdue() {
+  return parseJsonColumns(listOverdueStmt.all(), ['user', 'book']);
+}
+
+export default { listAll, findById, create, update, remove, listOverdue };
