@@ -1,3 +1,5 @@
+import logger from '../utils/logger.js';
+
 export function parseJsonColumns(rows, columns) {
   if (!rows) return rows;
   if (Array.isArray(rows)) {
@@ -8,7 +10,7 @@ export function parseJsonColumns(rows, columns) {
           try {
             parsedRow[col] = JSON.parse(parsedRow[col]);
           } catch (e) {
-            // Fallback if not JSON
+            logger.error(`Error parsing JSON column ${col}: ${e.message}`);
           }
         }
       });
@@ -21,7 +23,7 @@ export function parseJsonColumns(rows, columns) {
       try {
         parsedRow[col] = JSON.parse(parsedRow[col]);
       } catch (e) {
-        // Fallback if not JSON
+        logger.error(`Error parsing JSON column ${col}: ${e.message}`);
       }
     }
   });
