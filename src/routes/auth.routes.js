@@ -14,15 +14,18 @@ router.get('/register', (req, res) => {
   });
 });
 
-router.post('/register', async (req, res) => {
+router.post('/register', async (req, res, next) => {
   const email = String(req.body.email || '').trim().toLowerCase();
   const name = String(req.body.name || '').trim();
   const password = String(req.body.password || '');
 
   const errors = [];
-  if (!email || !email.includes('@')) errors.push('Email non valida.');
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+
+  if (!email || !emailRegex.test(email)) errors.push('Email non valida.');
   if (name.length < 2) errors.push('Il nome deve avere almeno 2 caratteri.');
-  if (password.length < 8) errors.push('La password deve avere almeno 8 caratteri.');
+  if (!password || !passwordRegex.test(password)) errors.push('La password deve contenere almeno 8 caratteri, una maiuscola, una minuscola e un numero.');
 
   if (errors.length === 0 && userRepo.findByEmail(email)) {
     errors.push('Esiste già un account con questa email.');
@@ -42,11 +45,7 @@ router.post('/register', async (req, res) => {
     req.session.userId = userId;
     res.redirect(303, '/books');
   } catch (e) {
-    res.status(500).render('auth/register', {
-      title: 'Crea un account',
-      form: { email, name },
-      errors: ['Errore interno del server.'],
-    });
+    next(e);
   }
 });
 
@@ -59,12 +58,17 @@ router.get('/login', (req, res) => {
   });
 });
 
-router.post('/login', async (req, res) => {
+router.post('/login', async (req, res, next) => {
   const email = String(req.body.email || '').trim().toLowerCase();
   const password = String(req.body.password || '');
 
   const user = email ? userRepo.findByEmail(email) : null;
-  const ok = user && (await bcrypt.compare(password, user.password_hash));
+  let ok = false;
+  try {
+    ok = user && (await bcrypt.compare(password, user.password_hash));
+  } catch (e) {
+    return next(e);
+  }
 
   if(!ok) {
     return res.status(401).render('auth/login', {
