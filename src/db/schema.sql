@@ -59,6 +59,7 @@ CREATE TABLE
     user_id INTEGER NOT NULL,
     book_id INTEGER NOT NULL,
     borrowed_at TEXT NOT NULL DEFAULT (datetime ('now')),
+    due_date TEXT,
     returned_at TEXT,
     FOREIGN KEY (user_id) REFERENCES users (id),
     FOREIGN KEY (book_id) REFERENCES books (id)
